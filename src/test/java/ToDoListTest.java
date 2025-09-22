@@ -1,9 +1,9 @@
 import org.example.ToDoList;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ToDoListTest {
 
@@ -12,7 +12,7 @@ public class ToDoListTest {
         ToDoList t = new ToDoList();
         t.add("  task1  ");
         assertEquals(1, t.size());
-        assertEquals("task1", t.getAll().getFirst());
+        assertTrue(t.getAll().get(0).contains("task1"));
     }
 
     @Test
@@ -31,4 +31,34 @@ public class ToDoListTest {
         t.add("   ");
         assertEquals(0, t.size());
     }
-} 
+
+    @Test
+    void clearAll() {
+        ToDoList t = new ToDoList();
+        t.add("one");
+        t.add("two");
+        assertEquals(2, t.size());
+        t.clear();
+        assertEquals(0, t.size());
+    }
+
+    @Test
+    void markDone() {
+        ToDoList t = new ToDoList();
+        t.add("task");
+        assertTrue(t.markDone(0));
+        List<String> all = t.getAll();
+        assertTrue(all.get(0).startsWith("[x]"));
+    }
+
+    @Test
+    void searchTasks() {
+        ToDoList t = new ToDoList();
+        t.add("Buy milk");
+        t.add("Write code");
+        t.add("Read book");
+        List<String> found = t.search("code");
+        assertEquals(1, found.size());
+        assertTrue(found.get(0).contains("Write code"));
+    }
+}
